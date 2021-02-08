@@ -19,12 +19,12 @@ switch grid_structure
         N=3;
         points = cube_grid(N);
     case "sphere"
-        n = 50;
+        n = 500;
         radius = 10;
         points = sphere_grid(radius,n);
     case "cylinder"
         n = 100;
-        radius = 10;
+        radius = 2;
         points = cylinder_grid(radius,n);
     otherwise
         n = 10;
@@ -33,7 +33,7 @@ switch grid_structure
 end
 
 % plotting grid structure
-scatter3(points(1,:),points(2,:),points(3,:));
+% scatter3(points(1,:),points(2,:),points(3,:));
 
 
 %%
@@ -41,8 +41,8 @@ scatter3(points(1,:),points(2,:),points(3,:));
 % after building grid of some shape we choose n points in this grid, to
 % generate tensegrity
 n = size(points,2);
-m = 2;
-n_nodes= 8;
+m = 3;
+n_nodes= 10;
 available_slots = 1:n;
 random_permutation = randperm(numel(available_slots));
 chosen_slots = random_permutation(1:n_nodes);
@@ -103,12 +103,17 @@ subject to
     diag(R) == zeros(n, 1);
     diag(C) == zeros(n, 1);
     
+    
+    
     sum(R, 1) == ones(1, n);
     sum(R, 2) == ones(n, 1);
     
     P = C+R;
     P(:) <= ones(n*n, 1);
     
+    sum(P(:)) >= 45;
+    
+
 
     for i = 1:n
         for j = 1:n
@@ -139,6 +144,9 @@ C = full(C);
 R = full(R);
 f = full(f);
 
+disp("sum: ");
+disp(sum(P(:)));
+
 %%
 % Checking if all nodes are connected
 % Using depth-first search(DFS)
@@ -156,7 +164,7 @@ solution.points = points;
 solution.C = C;
 solution.R = R;
 
-filename = "good_shape.mat";
+filename = "good_shape_10.mat";
 save(filename,"solution");
 
 load(filename);
