@@ -12,7 +12,7 @@ cvx_solver Gurobi_2;
 
 %% GRID
 
-grid_structure = "cylinder";
+grid_structure = "arc";
 
 switch grid_structure
     case "cube"
@@ -26,6 +26,10 @@ switch grid_structure
         n = 100;
         radius = 2;
         points = cylinder_grid(radius,n);
+    case "arc"
+        n = 10;
+        radius = 2;
+        points = arc_grid(radius,n);
     otherwise
         n = 10;
         points = randn(3,n);
@@ -42,7 +46,7 @@ end
 % generate tensegrity
 n = size(points,2);
 m = 3;
-n_nodes= 10;
+n_nodes= 12;
 available_slots = 1:n;
 random_permutation = randperm(numel(available_slots));
 chosen_slots = random_permutation(1:n_nodes);
