@@ -1,7 +1,6 @@
 function [points] = cube_grid(N)
 
-    %CUBE Summary of this function goes here
-    %   Detailed explanation goes here
+
 %     N - number of nodes in each direction
     
     
