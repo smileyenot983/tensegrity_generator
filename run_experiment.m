@@ -4,7 +4,7 @@ function solution = run_experiment(exp_num,n_nodes,random_nodes,grid_structure,s
 %   Detailed explanation goes here
 %% GRID
 
-
+rng(exp_num);
 switch grid_structure
     case "cube"
         N=3;
@@ -45,12 +45,15 @@ m = 3;
 % n_nodes= 20;
 available_slots = 1:n;
 
+
+
 if random_nodes == true
     random_permutation = randperm(numel(available_slots));
 else
     load("cylinder_permutation");
     
 end
+
 
 chosen_slots = random_permutation(1:n_nodes);
 
