@@ -38,7 +38,7 @@ function [] = visualize_solution(solution,n_fixed,filename,plot_title)
     plot3(points(1, :)', points(2, :)', points(3, :)', 'o', 'MarkerFaceColor', 'r')
     plot3(points(1, 1:n_fixed)', points(2, 1:n_fixed)', points(3, 1:n_fixed)', 'o', 'MarkerFaceColor', 'g')
 
-    title(plot_title);
+    title(plot_title,'Interpreter','none');
     axis equal
     
 %     saveas(figure1,strcat(filename,'.png'));

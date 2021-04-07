@@ -16,9 +16,9 @@ cvx_solver Gurobi_2;
 % projection_max_length = 4;
 
 % % arc constraints:
-% strut_max_length = 5; 
-% cable_max_length = 5; 
-% projection_max_length = 5;
+strut_max_length = 5; 
+cable_max_length = 5; 
+projection_max_length = 5;
  
 % % cylinder constraints:
 % strut_max_length = 4;
@@ -26,9 +26,9 @@ cvx_solver Gurobi_2;
 % projection_max_length = 4;
 
 % sphere constraints
-strut_max_length = 15; 
-cable_max_length = 15; 
-projection_max_length = 15;
+% strut_max_length = 15; 
+% cable_max_length = 15; 
+% projection_max_length = 15;
 
 strut_constraint = false;
 cable_constraint = false;
@@ -46,7 +46,7 @@ test_cases = [false,false,false;true,true,true];
 %     false,false,true; false,false,true; false,false,true; false,false,true];
 
 
-grid_structure = "sphere";
+grid_structure = "arc";
 
 n_nodes=20;
 
@@ -64,13 +64,14 @@ timemap_simple = [];
 timemap_constr= [];
 
 
-seed = 10;
+
+n_seeds = 5;
 
 % for seed=21:30
 for n_nodes=10:2:50
     
-    foldername = strcat("last_tests/",string(seed));
-    mkdir(foldername);
+%     foldername = strcat("last_tests/",string(seed));
+%     mkdir(foldername);
     
     axis_ctr = 1;
     projection_axis = "0";
@@ -86,21 +87,32 @@ for n_nodes=10:2:50
             axis_ctr = axis_ctr +1;
         end
         
+%         timemap_node_simple = [];
+%         timemap_node_constr = [];
         
-        start = tic;
+        timemap_node = [];
+        
+        for seed=1:n_seeds
+            
+            start = tic;
 
-        sol = run_experiment(seed,n_nodes,true,grid_structure,strut_constraint,strut_max_length,cable_constraint,cable_max_length,...
-            projection_constraint,projection_axis,projection_max_length);
+            sol = run_experiment(seed,n_nodes,true,grid_structure,strut_constraint,strut_max_length,cable_constraint,cable_max_length,...
+                projection_constraint,projection_axis,projection_max_length);
+
+            stop = toc(start);
+
+            timemap_node(end+1) = stop;
         
-        stop = toc(start);
+        end
 
         if i==1
-            timemap_simple(end+1) = stop;
+            timemap_simple(end+1) = mean(timemap_node);
         else
-            timemap_constr(end+1) = stop;
+            timemap_constr(end+1) = mean(timemap_node);
         end
         
         
+
         
 %         dataname = strcat(grid_structure,"_",string(seed),"_","c_constr:",string(cable_constraint),"_","s_constr:",string(strut_constraint),...
 %             "_","proj_constr:",string(projection_constraint),"_ax:",projection_axis,".mat");
@@ -117,7 +129,7 @@ for n_nodes=10:2:50
     end
 end
 % saveas(figure1,strcat(foldername,"/",grid_structure,"exp:",string(exp_num),'.png'));
-save("timemap_simple");
-save(timemap_constr);
+save("timemap_arc_5seeds");
+% save(timemap_constr);
 
 
