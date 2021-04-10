@@ -65,7 +65,7 @@ timemap_constr= [];
 
 
 
-n_seeds = 5;
+n_seeds = 10;
 
 % for seed=21:30
 for n_nodes=10:2:50
@@ -80,7 +80,7 @@ for n_nodes=10:2:50
 
         strut_constraint = test_cases(i,1);
         cable_constraint = test_cases(i,2);
-        projection_constraint=test_cases(i,3);
+        projection_constraint = test_cases(i,3);
         
         if projection_constraint==true
             projection_axis = all_axis(axis_ctr);
@@ -92,7 +92,7 @@ for n_nodes=10:2:50
         
         timemap_node = [];
         
-        for seed=1:n_seeds
+        for seed=101:101+n_seeds
             
             start = tic;
 
@@ -129,7 +129,7 @@ for n_nodes=10:2:50
     end
 end
 % saveas(figure1,strcat(foldername,"/",grid_structure,"exp:",string(exp_num),'.png'));
-save("timemap_arc_5seeds");
+save("timemap_arc_10seeds");
 % save(timemap_constr);
 
 
