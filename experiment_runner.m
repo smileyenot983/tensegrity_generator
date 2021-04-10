@@ -16,9 +16,9 @@ cvx_solver Gurobi_2;
 % projection_max_length = 4;
 
 % % arc constraints:
-strut_max_length = 5; 
-cable_max_length = 5; 
-projection_max_length = 5;
+% strut_max_length = 5; 
+% cable_max_length = 5; 
+% projection_max_length = 5;
  
 % % cylinder constraints:
 % strut_max_length = 4;
@@ -29,10 +29,10 @@ projection_max_length = 5;
 % strut_max_length = 15; 
 % cable_max_length = 15; 
 % projection_max_length = 15;
-
-strut_constraint = false;
-cable_constraint = false;
-projection_constraint=false;
+% 
+% strut_constraint = false;
+% cable_constraint = false;
+% projection_constraint=false;
 
 
 %% GRID
@@ -46,9 +46,34 @@ test_cases = [false,false,false;true,true,true];
 %     false,false,true; false,false,true; false,false,true; false,false,true];
 
 
+% ___________________-HYPERPARAMETERS____________________________
 grid_structure = "arc";
+n_seeds = 20;
+num_nodes = 20:2:40;
+%___________________________________________________________________
 
-n_nodes=20;
+switch grid_structure
+    case "cube stacks"
+        strut_max_length = 4; 
+        cable_max_length = 4; 
+        projection_max_length = 4;
+    case "sphere"
+        strut_max_length = 15; 
+        cable_max_length = 15; 
+        projection_max_length = 15;
+    case "cylinder"
+        strut_max_length = 4;
+        cable_max_length = 4;
+        projection_max_length = 4;
+    case "arc"        
+        strut_max_length = 6; 
+        cable_max_length = 6; 
+        projection_max_length = 6;
+    otherwise
+        warning("Wrong grid was chosen");
+end
+
+% n_nodes=20;
 
 titles = ["without constraints","rod constraint","cable constraint","cable + rod constraint",...
     "x axis constraint","y axis constraint","z axis constraint","x+y axis constraint"];
@@ -65,10 +90,10 @@ timemap_constr= [];
 
 
 
-n_seeds = 20;
+
 
 % for seed=21:30
-num_nodes = 10:2:50;
+
 
 % for n_nodes=10:2:12
 for n=1:size(num_nodes,2)
@@ -95,7 +120,7 @@ for n=1:size(num_nodes,2)
         
         timemap_node = [];
         
-        for seed=101:101+n_seeds
+        for seed=1:n_seeds
             
             start = tic;
 
@@ -114,8 +139,7 @@ for n=1:size(num_nodes,2)
             timemap_constr(end+1) = mean(timemap_node);
         end
         
-        
-
+       
         
 %         dataname = strcat(grid_structure,"_",string(seed),"_","c_constr:",string(cable_constraint),"_","s_constr:",string(strut_constraint),...
 %             "_","proj_constr:",string(projection_constraint),"_ax:",projection_axis,".mat");
