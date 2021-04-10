@@ -48,8 +48,8 @@ test_cases = [false,false,false;true,true,true];
 
 % ___________________-HYPERPARAMETERS____________________________
 grid_structure = "arc";
-n_seeds = 20;
-num_nodes = 20:2:40;
+n_seeds = 10;
+num_nodes = 10:2:50;
 %___________________________________________________________________
 
 switch grid_structure
@@ -96,7 +96,7 @@ timemap_constr= [];
 
 
 % for n_nodes=10:2:12
-for n=1:size(num_nodes,2)
+for n=num_nodes(1):2:num_nodes(end)
     
 %     foldername = strcat("last_tests/",string(seed));
 %     mkdir(foldername);
@@ -120,7 +120,7 @@ for n=1:size(num_nodes,2)
         
         timemap_node = [];
         
-        for seed=1:n_seeds
+        for seed=101:101+n_seeds
             
             start = tic;
 
@@ -156,7 +156,9 @@ for n=1:size(num_nodes,2)
     end
 end
 % saveas(figure1,strcat(foldername,"/",grid_structure,"exp:",string(exp_num),'.png'));
-save("timemap_arc_20seeds");
+% save("timemap_arc_20seeds");
+filename = strcat("tmap_",grid_structure,"_",string(n_seeds));
+save(filename);
 % save(timemap_constr);
 
 figure();
