@@ -49,7 +49,7 @@ test_cases = [false,false,false;true,true,true];
 % ___________________-HYPERPARAMETERS____________________________
 grid_structure = "arc";
 n_seeds = 10;
-num_nodes = 10:2:50;
+num_nodes = 10:2:5      0;
 %___________________________________________________________________
 
 switch grid_structure
@@ -85,18 +85,20 @@ titles = ["without constraints","rod constraint","cable constraint","cable + rod
 
 all_axis = ["x","y","z","xy"];
 
-timemap_simple = [];
-timemap_constr= [];
+% timemap_simple = [];
+% timemap_constr= [];
 
-
+timemap_simple = zeros(n_seeds,size(num_nodes,2));
+timemap_constr= zeros(n_seeds,size(num_nodes,2));
 
 
 
 % for seed=21:30
 
-
+iteration = 1;
 % for n_nodes=10:2:12
 for n=num_nodes(1):2:num_nodes(end)
+    
     
 %     foldername = strcat("last_tests/",string(seed));
 %     mkdir(foldername);
@@ -120,7 +122,7 @@ for n=num_nodes(1):2:num_nodes(end)
         
         timemap_node = [];
         
-        for seed=101:101+n_seeds
+        for seed=101:101+n_seeds-1
             
             start = tic;
 
@@ -133,13 +135,17 @@ for n=num_nodes(1):2:num_nodes(end)
         
         end
 
+
+        
         if i==1
-            timemap_simple(end+1) = mean(timemap_node);
+%             timemap_simple(end+1) = mean(timemap_node);
+            timemap_simple(:,iteration) = timemap_node;
         else
-            timemap_constr(end+1) = mean(timemap_node);
+%             timemap_constr(end+1) = mean(timemap_node);
+            timemap_constr(:,iteration) = timemap_node;
         end
         
-       
+        
         
 %         dataname = strcat(grid_structure,"_",string(seed),"_","c_constr:",string(cable_constraint),"_","s_constr:",string(strut_constraint),...
 %             "_","proj_constr:",string(projection_constraint),"_ax:",projection_axis,".mat");
@@ -154,6 +160,7 @@ for n=num_nodes(1):2:num_nodes(end)
 
         close all;
     end
+    iteration = iteration+1;
 end
 % saveas(figure1,strcat(foldername,"/",grid_structure,"exp:",string(exp_num),'.png'));
 % save("timemap_arc_20seeds");
@@ -162,13 +169,15 @@ save(filename);
 % save(timemap_constr);
 
 figure();
-plot(num_nodes,timemap_simple);
+simple_averages = mean(timemap_simple,1);
+plot(num_nodes,simple_averages);
 xlabel("number of nodes");
 ylabel("time taken[s]");
 title("Without constraints");
 
 figure();
-plot(num_nodes,timemap_constr);
+constr_averages = mean(timemap_constr,1);
+plot(num_nodes,constr_averages);
 xlabel("number of nodes");
 ylabel("time taken[s]");
 title("With constraints");
